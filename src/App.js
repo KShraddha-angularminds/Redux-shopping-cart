@@ -1,5 +1,5 @@
 import logo from "./logo.svg";
-import "./App.css";
+import "./components/styles.css";
 import {
   BrowserRouter as Router,
   Routes,
@@ -9,6 +9,7 @@ import {
 import Home from "./components/Home";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import Cart from "./components/Cart";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to={"/home"} />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/cart" element={<Cart />} />
           </Routes>
         </Router>
       </div>

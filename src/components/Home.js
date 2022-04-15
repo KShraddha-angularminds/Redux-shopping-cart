@@ -95,7 +95,7 @@ function Home() {
     dispatch(setCartItemCnt(newArr.length));
   }, [data]);
   localStorage.setItem("cartCount", cartItemCnt);
-
+  console.log(data);
   const changeX = (no) => {
     dispatch(setInitialX(no));
   };
@@ -113,6 +113,17 @@ function Home() {
       dispatch(setActive(initial_x + 1));
     }
   };
+
+  // const counts = {};
+  // console.log(data);
+  // data.forEach(function (x) {
+  //   counts[x] = (counts[x] || 0) + 1;
+  // });
+
+  // const ar = Object.values(counts);
+
+  // console.log(ar);
+
   return (
     <div>
       <div class="container">

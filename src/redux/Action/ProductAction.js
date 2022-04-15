@@ -87,3 +87,28 @@ export const setIsSet = (flag) => {
     payload: flag,
   };
 };
+
+export const setCartICnt = (cnt) => {
+  return {
+    type: ActionTypes.SET_CART_COUNT,
+    payload: cnt,
+  };
+};
+export const setIsUpdate = (flag) => {
+  return {
+    type: ActionTypes.SET_IS_UPDATE,
+    payload: flag,
+  };
+};
+export const setNoOfProd = (nop) => {
+  return {
+    type: ActionTypes.SET_NO_OF_PRODUCT,
+    payload: nop,
+  };
+};
+export const setTotal = (total) => {
+  return {
+    type: ActionTypes.SET_TOTAL,
+    payload: total,
+  };
+};

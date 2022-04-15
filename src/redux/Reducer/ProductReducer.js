@@ -1,6 +1,7 @@
 import { ActionTypes } from "../Constants/ActionTypes";
 
 const x = JSON.parse(localStorage.getItem("cartItem"));
+const cartCount = JSON.parse(localStorage.getItem("cartCount"));
 
 const initialState = {
   products: [],
@@ -12,6 +13,10 @@ const initialState = {
   arr_length: 0,
   data: x ? x : [],
   isSet: false,
+  cartICount: cartCount || 0,
+  isUpdate: false,
+  noOfProd: [],
+  tot: 0,
 };
 
 export const setProductReducer = (state = initialState, action) => {
@@ -65,6 +70,26 @@ export const setProductReducer = (state = initialState, action) => {
       return {
         ...state,
         cartItemCnt: action.payload,
+      };
+    case ActionTypes.SET_CART_COUNT:
+      return {
+        ...state,
+        cartICount: action.payload,
+      };
+    case ActionTypes.SET_IS_UPDATE:
+      return {
+        ...state,
+        isUpdate: action.payload,
+      };
+    case ActionTypes.SET_NO_OF_PRODUCT:
+      return {
+        ...state,
+        noOfProd: action.payload,
+      };
+    case ActionTypes.SET_TOTAL:
+      return {
+        ...state,
+        tot: action.payload,
       };
     default:
       return state;

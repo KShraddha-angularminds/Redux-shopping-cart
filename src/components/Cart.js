@@ -2,25 +2,28 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Dispatch } from "react-redux";
-import { fetchProducts } from "../redux/Action/ProductAction";
+import {
+  fetchProducts,
+  setCartICnt,
+  setIsUpdate,
+} from "../redux/Action/ProductAction";
 function Cart() {
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(0);
-  const d = JSON.parse(localStorage.getItem("cartItem"));
-  const cartCount = JSON.parse(localStorage.getItem("cartCount"));
-  // const [data, setData] = useState(d);
-  const [cartICnt, setCartICnt] = useState(cartCount || 0);
+
   const baseURL = "http://interviewapi.ngminds.com";
 
-  const [isupdate, setIsUpdate] = useState(false);
   const [Storage, setstorage] = useState([]);
   const products = useSelector((state) => state.AllProducts.products);
   const data = useSelector((state) => state.AllProducts.data);
   const isSet = useSelector((state) => state.AllProducts.isSet);
+  const cartICnt = useSelector((state) => state.AllProducts.cartICnt);
+  const isupdate = useSelector((state) => state.AllProducts.isUpdate);
+  console.log(cartICnt);
   useEffect(() => {
     dispatch(fetchProducts());
   }, []);
-  console.log(products);
+  console.log(data);
   var newData = data.filter(function (elem, pos) {
     return data.indexOf(elem) == pos;
   });
@@ -47,15 +50,7 @@ function Cart() {
   useEffect(() => {
     setTotal(sum);
   });
-  // const setValues = (e, price) => {
-  //   console.log(price);
-  //   setQuantity(e.target.value);
-  //   let total = tot + price * quantity;
-  //   setTotal(total);
-  // };
-  //console.log(quantity);
 
-  // console.log(Storage);
   const removeProduct = (i) => {
     console.log(i);
     data &&
@@ -67,8 +62,8 @@ function Cart() {
     localStorage.setItem("cartItem", JSON.stringify(data));
     const a = newData.length - 1;
     localStorage.setItem("cartCount", a);
-    setCartICnt(cartICnt - 1);
-    setIsUpdate(!isupdate);
+    dispatch(setCartICnt(cartICnt - 1));
+    dispatch(setIsUpdate(!isupdate));
   };
   const incrementCnt = (i, price) => {
     setNoOfProd((prev) => prev.map((val, j) => (i === j ? prev[i] + 1 : val)));

@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 import { Dispatch } from "react-redux";
 import {
   fetchProducts,
-  setCartICnt,
+  setcartICount,
   setIsUpdate,
+  setNoOfProd,
+  setTotal,
 } from "../redux/Action/ProductAction";
 function Cart() {
   const dispatch = useDispatch();
@@ -17,13 +19,16 @@ function Cart() {
   const products = useSelector((state) => state.AllProducts.products);
   const data = useSelector((state) => state.AllProducts.data);
   const isSet = useSelector((state) => state.AllProducts.isSet);
-  const cartICnt = useSelector((state) => state.AllProducts.cartICnt);
+  const cartICount = useSelector((state) => state.AllProducts.cartICount);
   const isupdate = useSelector((state) => state.AllProducts.isUpdate);
-  console.log(cartICnt);
+  const tot = useSelector((state) => state.AllProducts.tot);
+  const noOfProd = useSelector((state) => state.AllProducts.noOfProd);
+  console.log(cartICount);
   useEffect(() => {
     dispatch(fetchProducts());
   }, []);
-  console.log(data);
+  //console.log(data);
+
   var newData = data.filter(function (elem, pos) {
     return data.indexOf(elem) == pos;
   });
@@ -33,12 +38,15 @@ function Cart() {
   });
 
   const ar = Object.values(counts);
-  const [noOfProd, setNoOfProd] = useState(ar);
-  console.log(noOfProd);
-
+  // const [noOfProd, setNoOfProd] = useState(ar);
+  //console.log(ar);
+  useEffect(() => {
+    dispatch(setNoOfProd(ar));
+  }, []);
+  //console.log(products);
   let sum = 0;
-  products.products &&
-    products.products.map((val, index) => {
+  products &&
+    products.map((val, index) => {
       newData.map((v, i) => {
         return newData[i] === val._id
           ? (sum = sum + val.price * noOfProd[i])
@@ -46,13 +54,14 @@ function Cart() {
       });
     });
   console.log(sum);
-  const [tot, setTotal] = useState(sum);
-  useEffect(() => {
-    setTotal(sum);
-  });
-
+  console.log(tot);
+  //const [tot, setTotal] = useState(sum);
+  // useEffect(() => {
+  //   dispatch(setTotal(sum));
+  // }, [tot]);
+  console.log(tot);
   const removeProduct = (i) => {
-    console.log(i);
+    // console.log(i);
     data &&
       data.map((index) => {
         console.log(data.indexOf(i));
@@ -62,20 +71,28 @@ function Cart() {
     localStorage.setItem("cartItem", JSON.stringify(data));
     const a = newData.length - 1;
     localStorage.setItem("cartCount", a);
-    dispatch(setCartICnt(cartICnt - 1));
+    dispatch(setcartICount(cartICount - 1));
     dispatch(setIsUpdate(!isupdate));
   };
   const incrementCnt = (i, price) => {
-    setNoOfProd((prev) => prev.map((val, j) => (i === j ? prev[i] + 1 : val)));
+    // dispatch(
+    //   setNoOfProd((prev) => prev.map((val, j) => (i === j ? prev[i] + 1 : val)))
+    // );
+    const x = noOfProd?.map((val, j) => (i === j ? noOfProd[i] + 1 : val));
+    dispatch(setNoOfProd(x));
     console.log(price);
     console.log(noOfProd[i]);
-    setTotal((noOfProd[i] + 1) * price);
+    dispatch(setTotal((noOfProd[i] + 1) * price));
   };
 
   const decrementCnt = (i, price) => {
-    setNoOfProd((prev) => prev.map((val, j) => (i === j ? prev[i] - 1 : val)));
+    // dispatch(
+    //   setNoOfProd((prev) => prev.map((val, j) => (i === j ? prev[i] - 1 : val)))
+    // );
+    const x = noOfProd?.map((val, j) => (i === j ? noOfProd[i] - 1 : val));
+    dispatch(setNoOfProd(x));
     console.log(noOfProd[i]);
-    setTotal((noOfProd[i] + 1) * price);
+    dispatch(setTotal((noOfProd[i] + 1) * price));
   };
 
   useEffect(() => {
@@ -85,16 +102,17 @@ function Cart() {
         products.products.map((val, index) => {
           newData.map((v, i) => {
             return newData[i] === val._id
-              ? setTotal((prev) => prev + val.price * noOfProd[i])
+              ? dispatch(setTotal((prev) => prev + val.price * noOfProd[i]))
               : "";
           });
         });
     }
   }, []);
-
+  console.log(tot);
+  console.log(noOfProd);
   localStorage.setItem("products", JSON.stringify(newData));
   localStorage.setItem("quantity", JSON.stringify(noOfProd));
-  console.log(products);
+  //console.log(products);
   return (
     <div>
       <div className="container">
@@ -103,7 +121,7 @@ function Cart() {
             <a href="/">My Ecommerce Site</a>
 
             <span className="pull-right">
-              <a href="cart.html">Cart {`(${cartICnt})`}</a>
+              <a href="cart.html">Cart {`(${cartICount})`}</a>
             </span>
           </h1>
           <hr />
@@ -194,7 +212,7 @@ function Cart() {
                   <div className="col-md-9">
                     <label className="pull-right">Amount Payable</label>
                   </div>
-                  <div className="col-md-3 ">{tot}</div>
+                  <div className="col-md-3 ">{tot == 0 ? sum : tot}</div>
                 </div>
               </div>
 

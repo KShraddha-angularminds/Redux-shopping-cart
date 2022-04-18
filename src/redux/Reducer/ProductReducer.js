@@ -13,7 +13,7 @@ const initialState = {
   arr_length: 0,
   data: x ? x : [],
   isSet: false,
-  cartICount: cartCount || 0,
+  cartICount: cartCount ? cartCount : 0,
   isUpdate: false,
   noOfProd: [],
   tot: 0,

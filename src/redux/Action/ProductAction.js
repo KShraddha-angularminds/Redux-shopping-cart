@@ -88,7 +88,7 @@ export const setIsSet = (flag) => {
   };
 };
 
-export const setCartICnt = (cnt) => {
+export const setcartICount = (cnt) => {
   return {
     type: ActionTypes.SET_CART_COUNT,
     payload: cnt,
